@@ -1,4 +1,4 @@
-# linux设置相关
+# linux相关设置
 
 ## ubuntu中文语言环境
 
