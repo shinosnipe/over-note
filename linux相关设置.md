@@ -71,3 +71,37 @@ apt install language-pack-zh-hans
     ]
 }
 ```
+
+## gentoo使用中科大源报错问题
+
+在docker中使用中科大的源，在下载完以后报错了，查了以下论坛发现是`make.profile`的链接是一个不存在的文件，对比了以下中科大源的帮助文件，发现是`localtion`写成了`/usr/portage/`，而`make.profile`链接到了`/var/db/repos/gentoo/`。
+
+![Alt text](img/docker中gentoo的portage报错.png)
+
+解决办法就俩，一个是改中科大给的配置文件，一个是改`make.profile`的链接路径。俩办法选一个，别俩都整来个两极反转。
+
+### 修改中科大配置文件
+
+`/etc/portage/repos.conf/gentoo.conf`：
+
+```ini
+[DEFAULT]
+main-repo = gentoo
+
+[gentoo]
+location = /var/db/repos/gentoo/
+sync-type = rsync
+sync-uri = rsync://rsync.mirrors.ustc.edu.cn/gentoo-portage/
+auto-sync = yes
+```
+
+### 修改make.profile的链接路径
+
+删除make.profile，重新链接：
+
+```bash
+rm -rf /etc/portage/make.profile
+ln -s /usr/portage/profiles/default/linux/amd64/17.1 /etc/portage/make.profile
+```
+
+具体的数字和内容根据原文件修改，基本就是把`/var/db/repos/gentoo/`改成`/usr/portage/`就行了。
