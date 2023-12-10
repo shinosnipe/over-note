@@ -78,3 +78,11 @@ Host ssh.github.com
   IdentityFile "C:\Users\One\.ssh\id_rsa"
   TCPKeepAlive yes
   ```
+
+## git log查看分支的命令行可视化
+
+使用以下命令查看：
+
+```bash
+git log --graph --pretty=oneline --abbrev-commit
+```

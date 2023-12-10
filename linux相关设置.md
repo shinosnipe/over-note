@@ -50,3 +50,24 @@ apt install language-pack-zh-hans
     # 设置开机启动
     systemctl enable your_service.service
     ```
+
+
+## v2ray配置文件
+
+一些官方没有给的配置，可能需要添加ws配置：
+
+```ini
+{
+    "outbounds": [
+        {
+            "streamSettings": {
+              "network": "ws",
+              "wsSettings": {
+                "path": "<路径>",
+                "headers": { "Host": "<Host的字符>" }
+              }
+            }
+        }
+    ]
+}
+```
