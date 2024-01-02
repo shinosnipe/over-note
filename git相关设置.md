@@ -85,4 +85,7 @@ Host ssh.github.com
 
 ```bash
 git log --graph --pretty=oneline --abbrev-commit
+# 自定义'git ll'与'git la'命令
+git config --global alias.la "log --pretty=format:'%C(yellow)%h%Creset %C(green)(%cd)%Creset %C(bold blue)<%cn>%Creset%C(red)%d%Creset %C(white)%s%Creset' --date=format-local:'%Y-%m-%d %H:%M:%S' --graph --all"
+git config --global alias.ll 'log --oneline --decorate --color --graph --all'
 ```
