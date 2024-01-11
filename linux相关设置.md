@@ -115,7 +115,7 @@ ln -s /usr/portage/profiles/default/linux/amd64/17.1 /etc/portage/make.profile
 现在`sda`上创建一个分区，即便是用整个硬盘也最好创建分区：
 
 ```bash
-# fdisk /dev/sda
+fdisk /dev/sda
 ```
 
 分区步骤省略，假设已创建一个分区`/dev/sda1`，并且在fdisk里用t选项修改分区类型为`LVM 分区`。
@@ -123,13 +123,13 @@ ln -s /usr/portage/profiles/default/linux/amd64/17.1 /etc/portage/make.profile
 创建物理卷（PV）：
 
 ```bash
-# pvcreate /dev/sda1
+pvcreate /dev/sda1
 ```
 
 创建卷组（VG），卷组名叫`g0`：
 
 ```bash
-# vgcreate g0 /dev/sda1
+vgcreate g0 /dev/sda1
 ```
 
 如果有更多的PV想一次添加到VG中，只要在后面一起填上去就行。
@@ -137,13 +137,13 @@ ln -s /usr/portage/profiles/default/linux/amd64/17.1 /etc/portage/make.profile
 创建逻辑卷（LV），假设创建100G大小，并且sda空间足够，卷名叫`lv1`：
 
 ```bash
-# lvcreate -L 100G g0 -n lv1
+lvcreate -L 100G g0 -n lv1
 ```
 
 如果要用所有VG的空间来创建LV，如下：
 
 ```bash
-# lvcreate -l +100%FREE g0 -n lv1
+lvcreate -l +100%FREE g0 -n lv1
 ```
 
 一个lvm分区到这里就创建好了，根据具体使用进行文件系统格式化或者组成别的分区。
@@ -151,12 +151,12 @@ ln -s /usr/portage/profiles/default/linux/amd64/17.1 /etc/portage/make.profile
 一些查看命令：
 
 ```bash
-# pvdisplay  # 查看物理卷详情
-# pvs        # 查看物理卷概要
-# vgdisplay  # 卷组用，同上
-# vgs
-# lvdisplay  # 逻辑卷用，同上
-# lvs
+pvdisplay  # 查看物理卷详情
+pvs        # 查看物理卷概要
+vgdisplay  # 卷组用，同上
+vgs
+lvdisplay  # 逻辑卷用，同上
+lvs
 ```
 
 ### 卷组（VG）扩展大小
@@ -166,7 +166,7 @@ ln -s /usr/portage/profiles/default/linux/amd64/17.1 /etc/portage/make.profile
 根据上一节的成果，假设我们新增一块`/dev/sdb`的硬盘，先进行分区，修改分区类型：
 
 ```bash
-# fdisk /dev/sdb
+fdisk /dev/sdb
 ```
 
 创建了一个分区`/dev/sdb1`，并且修改分区类型为`LVM 分区`。
@@ -174,13 +174,13 @@ ln -s /usr/portage/profiles/default/linux/amd64/17.1 /etc/portage/make.profile
 创建物理卷：
 
 ```bash
-# pvcreate /dev/sdb1
+pvcreate /dev/sdb1
 ```
 
 扩展卷组：
 
 ```bash
-# vgextend g0 /dev/sdb1
+vgextend g0 /dev/sdb1
 ```
 
 卷组的大小就扩展了。
