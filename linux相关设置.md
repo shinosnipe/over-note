@@ -218,7 +218,7 @@ pvmove /dev/sdb1
 这一步很关键，中间最好保持不要终端，否则容易出问题，可以挂到后台运行：
 
 ```bash
-nohup pvmove /dev/sdb1 /dev/sdc1 &
+nohup pvmove /dev/sdb1 /dev/sdc1 > pvm.log &
 ```
 
 5. 卷组`g0`移除`sdb1`：
