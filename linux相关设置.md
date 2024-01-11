@@ -184,3 +184,51 @@ vgextend g0 /dev/sdb1
 ```
 
 卷组的大小就扩展了。
+
+### 更换物理硬盘并移除被更换物理卷（PV）
+
+假设`/dev/sdb1`出现问题，目前文件还未受损，添加一块`/dev/sdc`硬盘来替换。
+
+1. 给`/dev/sdc`分区，更改分区类型
+
+2. 在sdc上创建PV：
+
+```bash
+pvcreate /dev/sdc1
+```
+
+3. 添加到卷组`g0`：
+
+```bash
+vgextend g0 /dev/sdc1
+```
+
+4. 移动`sdb1`的内容到`sdc1`上：
+
+```bash
+pvmove /dev/sdb1 /dev/sdc1
+```
+
+如果不写上`sdc1`，会自动寻找可以移动的卷组`g0`内的空间：
+
+```bash
+pvmove /dev/sdb1
+```
+
+这一步很关键，中间最好保持不要终端，否则容易出问题，可以挂到后台运行：
+
+```bash
+nohup pvmove /dev/sdb1 /dev/sdc1 &
+```
+
+5. 卷组`g0`移除`sdb1`：
+
+```bash
+vgreduce g0 /dev/sdb1
+```
+
+6. 移除物理卷`sdb1`，如果不在用于其他卷组的话：
+
+```bash
+pvremove /dev/sdb1
+```
